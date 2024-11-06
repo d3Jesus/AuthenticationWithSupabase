@@ -1,0 +1,66 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+@using AuthenticationWithSupabase.Models
+
+<div class="form-body">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h3>Register Today</h3>
+                    <p>Fill in the data below.</p>
+                    <EditForm Model="Input" OnValidSubmit="HandleValidSubmit" FormName="RegisterPage">
+
+                        <div class="form-group">
+                            <label class="form-control-label">USERNAME</label>
+                            <InputText id="name" class="form-control" @bind-Value="@Input.Email" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label">PASSWORD</label>
+                            <InputText id="pass" class="form-control" @bind-Value="Input.Password" />
+                        </div>
+
+                        <div class="form-button mt-3">
+                            <button id="submit" type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    public InputModel Input = new();
+
+    [Inject]
+    public Supabase.Client supabase { get; set; }
+    [Inject]
+    public NavigationManager Navigation { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            var session = await supabase.Auth.SignUp(Input.Email, Input.Password);
+
+            if(session is not null)
+            {
+                Navigation.NavigateTo("/counter", true);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+
+    }
+
+    public class InputModel
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+}
