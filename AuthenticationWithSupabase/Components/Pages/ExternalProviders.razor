@@ -1,0 +1,34 @@
+<div class="divider">
+    Or
+</div>
+
+
+<form action="auth/external-login" method="post" class="social-form">
+    <div class="d-flex justify-content-center text-center ">
+        <AntiforgeryToken />
+        <input type="hidden" name="returnUrl" value="@ReturnUrl" />
+        <div class="social-icons">
+            <button type="submit" name="provider" value="Google" class="btn-link social-icon google rounded-circle">
+                <i class="fab fa-google"></i>
+            </button>
+            <button type="submit" name="provider" value="Github" class="btn-link social-icon github rounded-circle">
+                <i class="fab fa-github"></i>
+            </button>
+            <button type="submit" name="provider" value="Dribbble" class="btn-link social-icon dribbble rounded-circle">
+                <i class="fab fa-dribbble"></i>
+            </button>
+            <button type="submit" name="provider" value="Instagram"
+                class="btn-link social-icon instagram rounded-circle">
+                <i class="fab fa-instagram"></i>
+            </button>
+            <button type="submit" name="provider" value="Facebook" class="btn-link social-icon facebook rounded-circle">
+                <i class="fab fa-facebook"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
+@code {
+    [SupplyParameterFromQuery]
+    private string ReturnUrl { get; set; }
+}

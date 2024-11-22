@@ -1,75 +1,30 @@
-﻿@page "/login"
-@rendermode InteractiveServer
+﻿<div class="user signinBx">
+    <div class="imgBx">
+        <img src="https://raw.githubusercontent.com/WoojinFive/CSS_Playground/master/Responsive%20Login%20and%20Registration%20Form/img1.jpg"
+            alt="company logo" />
+    </div>
+    <div class="formBx flex-column">
+        <form action="" onsubmit="return false;">
+            <h2>Sign In</h2>
+            <input type="text" name="" placeholder="Username" />
+            <input type="password" name="" placeholder="Password" />
+            <input type="submit" name="" value="Login" />
+            <p class="signup">
+                Don't have an account ?
+                <a href="#" @onclick="@ToggleToRegisterForm">Sign Up.</a>
+            </p>
+        </form>
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-3 col-md-2"></div>
-        <div class="col-lg-6 col-md-8 login-box">
-            <div class="col-lg-12 login-key">
-                <i class="fa fa-key" aria-hidden="true"></i>
-            </div>
-            <div class="col-lg-12 login-title">
-                ADMIN PANEL
-            </div>
+        <ExternalProviders />
 
-            <div class="col-lg-12 login-form">
-                <div class="col-lg-12 login-form">
-                    <EditForm Model="Input" OnValidSubmit="HandleValidSubmit" FormName="LoginPage">
-                        <div class="form-group">
-                            <label class="form-control-label">USERNAME</label>
-                            <InputText id="name" class="form-control" @bind-Value="Input.Email" />
-                        </div>
-                        <div class="form-group">
-                            <label class="form-control-label">PASSWORD</label>
-                            <InputText id="name" class="form-control" @bind-Value="Input.Password" />
-                        </div>
-
-                        <div class="col-lg-12 loginbttm">
-                            <div class="col-lg-6 login-btm login-button">
-                                <button type="submit" class="btn btn-outline-primary">LOGIN</button>
-                            </div>
-                        </div>
-                    </EditForm>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-2"></div>
-        </div>
     </div>
 </div>
 
 @code {
-    public InputModel Input = new();
-    [Inject]
-    public NavigationManager Navigation { get; set; }
-
-    [Inject]
-    public Supabase.Client supabase { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    [Parameter]
+    public EventCallback<string> OnFormChange { get; set; }
+    private async Task ToggleToRegisterForm()
     {
-        await supabase.Auth.SignOut();
-    }
-
-    private async Task HandleValidSubmit()
-    {
-        try
-        {
-            var session = await supabase.Auth.SignIn(Input.Email, Input.Password);
-            if (session.User is not null)
-            {
-                Navigation.NavigateTo("/weather", true);
-            }
-        }
-        catch(Exception ex)
-        {
-            throw ex;
-        }
-
-    }
-
-    public class InputModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        await OnFormChange.InvokeAsync("active");
     }
 }

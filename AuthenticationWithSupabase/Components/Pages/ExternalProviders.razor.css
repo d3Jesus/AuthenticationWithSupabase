@@ -1,0 +1,84 @@
+.divider {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    color: #b1b1b1;
+  }
+  
+.divider::before, .divider::after {
+    flex: 1;
+    content: '';
+    padding: 3px;
+    background-color: #F5F5F5;
+    margin: 5px;
+  }
+
+  .btn-link {
+    color: #fff;
+    transition: 0.3s;
+    border-color: transparent;
+}
+.btn-link:hover {
+    color: color-mix(in srgb, #fff, transparent 25%);
+  }
+  .social-icons {
+    width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.social-icon {
+	display: flex;
+	position: relative;
+	overflow: hidden; 
+	width: var(--link-size);
+	height: var(--link-size);
+	margin: 8px;
+	background-color: white;
+	border-radius: 50%;
+	box-shadow: 0px 1px 3px rgba(0,0,0,0.12);
+	text-decoration: none;
+	transition: var(--trans-property);
+}
+.social-icon i {
+	margin: auto;
+	font-size: 24px;
+	color: #67798e;
+	z-index: 1; 
+	transition: var(--trans-property);
+}
+.social-icon:after {
+	content: "";
+	width: var(--link-size);
+	height: var(--link-size);
+	position: absolute;
+	transform: translate(0, var(--link-size));
+	border-radius: 50%;
+	transition: var(--trans-property);
+}
+.social-icon.google:after {
+	background-color: #ea4335;
+}
+.social-icon.github:after {
+	background-color: #24292e;
+}
+.social-icon.dribbble:after {
+	background-color: #ea4c89;
+}
+.social-icon.instagram:after {
+	background-color: #5851db;
+}
+.social-icon.facebook:after {
+	background-color: #1769ff;
+}
+/*** Animations ***/
+.social-icon:hover {
+	transform: translateY(-4px);
+	box-shadow: 0px 4px 12px rgba(0,0,0,0.16);
+}
+.social-icon:hover i {
+	color: #fff;
+}
+.social-icon:hover:after {
+	transform: translate(0) scale(1.2);
+}
