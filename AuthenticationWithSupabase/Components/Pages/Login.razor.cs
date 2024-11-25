@@ -1,36 +1,14 @@
-﻿@using System.Security.Claims
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Authentication.Cookies
-@using System.ComponentModel.DataAnnotations
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
-@if (string.IsNullOrEmpty(message))
+namespace AuthenticationWithSupabase.Components.Pages.Auth;
+
+public partial class Login
 {
-    <h3>@message</h3>
-}
 
-<div class="user signinBx">
-    <div class="imgBx">
-        <img src="https://raw.githubusercontent.com/WoojinFive/CSS_Playground/master/Responsive%20Login%20and%20Registration%20Form/img1.jpg"
-            alt="company logo" />
-    </div>
-    <div class="formBx flex-column">
-        <form action="" onsubmit="return false;">
-            <h2>Sign In</h2>
-            <input type="text" name="" placeholder="Username" />
-            <input type="password" name="" placeholder="Password" />
-            <input type="submit" name="" value="Login" />
-            <p class="signup">
-                Don't have an account ?
-                <a href="#" @onclick="@ToggleToRegisterForm">Sign Up.</a>
-            </p>
-        </form>
-
-        <ExternalProviders />
-
-    </div>
-</div>
-
-@code {
     [Parameter]
     public EventCallback<string> OnFormChange { get; set; }
     private async Task ToggleToRegisterForm()
@@ -59,10 +37,10 @@
             var containsFullName = session.User.UserMetadata.ContainsKey("full_name");
 
             var claims = new List<Claim>()
-{
-new(ClaimTypes.Sid, session.User.Id),
-new("full_name", containsFullName ? session.User.UserMetadata["full_name"].ToString() : "No name")
-};
+            {
+                new(ClaimTypes.Sid, session.User.Id),
+                new("full_name", containsFullName ? session.User.UserMetadata["full_name"].ToString() : "No name")
+            };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
