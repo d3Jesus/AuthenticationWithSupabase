@@ -39,7 +39,7 @@ public partial class Login
             var claims = new List<Claim>()
             {
                 new(ClaimTypes.Sid, session.User.Id),
-                new("full_name", containsFullName ? session.User.UserMetadata["full_name"].ToString() : "No name")
+                new(ClaimTypes.Email, session.User.Email)
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

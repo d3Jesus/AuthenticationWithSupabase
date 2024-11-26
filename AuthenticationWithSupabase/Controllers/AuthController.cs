@@ -11,6 +11,7 @@ public class AuthController(Supabase.Client client, IHttpContextAccessor context
 {
     public async Task<IActionResult> Callback()
     {
+        // Provided by the provider
         var authcode = Request.Query["code"];
         if (string.IsNullOrEmpty(authcode))
         {

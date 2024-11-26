@@ -35,9 +35,6 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 
-string url = builder.Configuration["Supabase:URL"]!;
-string key = builder.Configuration["Supabase:KEY"];
-
 builder.Services.AddScoped<Supabase.Client>(_ =>
     new Supabase.Client(
         builder.Configuration["Supabase:URL"]!,
