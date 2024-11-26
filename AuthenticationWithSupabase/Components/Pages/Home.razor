@@ -1,20 +1,9 @@
 ﻿@page "/"
-@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<section>
-    <div class="container @_toggler">
-        <Login OnFormChange="OnFormChangeHandler" />
+<PageTitle>Home</PageTitle>
 
-        <Register OnFormChange="OnFormChangeHandler" />
-    </div>
-</section>
+<h1>Hello, world!</h1>
 
-@code {
-    private string _toggler = string.Empty;
-    private void OnFormChangeHandler(string toggle)
-    {
-        _toggler = toggle;
-    }
-}
+Welcome to your new app.

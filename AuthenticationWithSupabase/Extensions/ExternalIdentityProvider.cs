@@ -33,7 +33,7 @@ public static class ExternalIdentityProvider
             var options = new SignInOptions
             {
                 FlowType = OAuthFlowType.PKCE,
-                RedirectTo = "http://localhost:5024/auth/callback"
+                RedirectTo = $"{context.Request.Scheme}://{context.Request.Host}/auth/callback"
             };
 
             var signInUrl = await supabase.Auth.SignIn(externalProvider, options);

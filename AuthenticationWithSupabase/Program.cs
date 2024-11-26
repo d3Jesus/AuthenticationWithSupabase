@@ -29,9 +29,11 @@ builder.Services
     .AddCookie(options =>
     {
         options.Cookie.Name = "auth.cookie";
-        options.LoginPath = "/auth/sign-in";
+        options.LoginPath = "/login";
         options.Cookie.MaxAge = TimeSpan.FromHours(1);
     });
+builder.Services.AddAuthorization();
+builder.Services.AddCascadingAuthenticationState();
 
 string url = builder.Configuration["Supabase:URL"]!;
 string key = builder.Configuration["Supabase:KEY"];

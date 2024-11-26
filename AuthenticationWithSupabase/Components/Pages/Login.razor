@@ -3,47 +3,57 @@
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using System.ComponentModel.DataAnnotations
 
-@if (string.IsNullOrEmpty(message))
-{
-    <h3>@message</h3>
-}
+@page "/login"
 
-<div class="user signinBx">
-    <div class="imgBx">
-        <img src="https://raw.githubusercontent.com/WoojinFive/CSS_Playground/master/Responsive%20Login%20and%20Registration%20Form/img1.jpg"
-            alt="company logo" />
+<h1>Log in</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        @if (string.IsNullOrEmpty(message))
+        {
+            <h3>@message</h3>
+        }
+        <EditForm Model="Input" OnValidSubmit="LoginUser" FormName="login">
+            <DataAnnotationsValidator />
+            <h2>Use a local account to log in.</h2>
+            <hr />
+            <ValidationSummary class="text-danger" role="alert" />
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label for="email" class="form-label">Email</label>
+                <ValidationMessage For="() => Input.Email" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                <label for="password" class="form-label">Password</label>
+                <ValidationMessage For="() => Input.Password" class="text-danger" />
+            </div>
+            <div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+            </div>
+            <div>
+                <p>
+                    <a href="register">Register as a new user</a>
+                </p>
+            </div>
+        </EditForm>
     </div>
-    <div class="formBx flex-column">
-        <form action="" onsubmit="return false;">
-            <h2>Sign In</h2>
-            <input type="text" name="" placeholder="Username" />
-            <input type="password" name="" placeholder="Password" />
-            <input type="submit" name="" value="Login" />
-            <p class="signup">
-                Don't have an account ?
-                <a href="#" @onclick="@ToggleToRegisterForm">Sign Up.</a>
-            </p>
-        </form>
-
-        <ExternalProviders />
-
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to log in.</h3>
+            <hr />
+            <ExternalProviders />
+        </section>
     </div>
 </div>
 
 @code {
-    [Parameter]
-    public EventCallback<string> OnFormChange { get; set; }
-    private async Task ToggleToRegisterForm()
-    {
-        await OnFormChange.InvokeAsync("active");
-    }
-
     private string message = string.Empty;
     [Inject]
     public IHttpContextAccessor Accessor { get; set; } = default!;
 
     [SupplyParameterFromForm]
-    private InputModel LoginInput { get; set; } = new();
+    private InputModel Input { get; set; } = new();
 
     [Inject]
     public NavigationManager Navigation { get; set; }
@@ -53,30 +63,30 @@
 
     public async Task LoginUser()
     {
-        Supabase.Gotrue.Session session = await Supabase.Auth.SignIn(LoginInput.Email, LoginInput.Password);
+        Supabase.Gotrue.Session session = await Supabase.Auth.SignIn(Input.Email, Input.Password);
         if (session is not null)
         {
             var containsFullName = session.User.UserMetadata.ContainsKey("full_name");
 
-            var claims = new List<Claim>()
-{
-new(ClaimTypes.Sid, session.User.Id),
-new("full_name", containsFullName ? session.User.UserMetadata["full_name"].ToString() : "No name")
-};
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.Sid, session.User.Id),
+                new("full_name", containsFullName ? session.User.UserMetadata["full_name"].ToString() : "No name")
+            };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await Accessor.HttpContext!.SignInAsync(principal);
 
-            Navigation.NavigateTo("/overview", true);
+            Navigation.NavigateTo("/counter", true);
         }
         else
         {
-            message = "";
+            message = "Invalid credentials";
         }
     }
 
-    private sealed class InputModel
+    public sealed class InputModel
     {
         [Required(ErrorMessage = "This field is required.")]
         [EmailAddress(ErrorMessage = "O email fornecido é inválido.")]

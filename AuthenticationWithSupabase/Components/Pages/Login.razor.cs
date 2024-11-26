@@ -46,7 +46,7 @@ public partial class Login
             var principal = new ClaimsPrincipal(identity);
             await Accessor.HttpContext!.SignInAsync(principal);
 
-            Navigation.NavigateTo("/overview", true);
+            Navigation.NavigateTo("/counter", true);
         }
         else
         {
